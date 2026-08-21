@@ -1,3 +1,46 @@
 <resources>
     <string name="app_name">WaterReminder</string>
+
+    <!-- Barra superior y navegación -->
+    <string name="top_bar_title">Water Reminder</string>
+    <string name="nav_hoy">Hoy</string>
+    <string name="nav_historial">Historial</string>
+    <string name="nav_ajustes">Ajustes</string>
+
+    <!-- Pantalla Hoy -->
+    <string name="meta_cumplida">¡Meta Cumplida!</string>
+    <string name="boton_agregar_ml">+ %1$d ml</string>
+
+    <!-- Pantalla Historial -->
+    <string name="tu_evolucion">Tu Evolución</string>
+    <string name="estadisticas_del_periodo">Estadísticas del periodo</string>
+    <string name="dias_logrados">Días Logrados</string>
+    <string name="promedio">Promedio</string>
+    <string name="consumo_total">Consumo Total</string>
+    <string name="objetivo">Objetivo</string>
+    <string name="formato_litros">%s L</string>
+    <string name="formato_ml">%d ml</string>
+
+    <!-- Pantalla Ajustes -->
+    <string name="ajustes_titulo">Ajustes</string>
+    <string name="meta_diaria">Meta Diaria</string>
+    <string name="label_mililitros_dia">Mililitros al día</string>
+    <string name="guardar_meta">Guardar Meta</string>
+    <string name="recordatorios">Recordatorios</string>
+    <string name="label_frecuencia_horas">Frecuencia (en horas)</string>
+    <string name="guardar_frecuencia">Guardar Frecuencia</string>
+    <string name="apariencia">Apariencia</string>
+    <string name="tema_seguir_sistema">Seguir Sistema</string>
+    <string name="tema_modo_claro">Modo Claro</string>
+    <string name="tema_modo_oscuro">Modo Oscuro</string>
+
+    <!-- Notificaciones (RecordatorioWorker) -->
+    <string name="canal_recordatorios_nombre">Recordatorios de Hidratación</string>
+    <string name="notificacion_titulo">¡Hora de beber agua!</string>
+    <string name="notificacion_texto">No has registrado agua en el último intervalo. ¡Mantente hidratado!</string>
+
+    <!-- Widget -->
+    <string name="widget_hidratacion">Hidratación</string>
+    <string name="widget_content_desc_agua">Agua</string>
+    <string name="widget_content_desc_vaso">Añadir vaso de 250ml</string>
 </resources>
