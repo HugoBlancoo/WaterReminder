@@ -2,226 +2,6 @@
 <issues format="6" by="lint 9.2.1" type="baseline" client="gradle" dependencies="false" name="AGP (9.2.1)" variant="all" version="9.2.1">
 
     <issue
-        id="NewApi"
-        message="Field requires API level 26 (current min is 24): `getMetaDiaria`"
-        errorLine1="    var meta by remember { mutableStateOf(viewModel.metaDiaria.toString()) }"
-        errorLine2="                                                    ~~~~~~~~~~">
-        <location
-            file="src/main/java/com/example/waterreminder/ui/screens/PantallaConfig.kt"
-            line="36"
-            column="53"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        message="Field requires API level 26 (current min is 24): `getIntervaloNotificaciones`"
-        errorLine1="    var intervalo by remember { mutableStateOf(viewModel.intervaloNotificaciones.toString()) }"
-        errorLine2="                                                         ~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/example/waterreminder/ui/screens/PantallaConfig.kt"
-            line="42"
-            column="58"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        message="Call requires API level 26 (current min is 24): `actualizarMeta`"
-        errorLine1="            onClick = { viewModel.actualizarMeta(meta.toIntOrNull() ?: 2000) },"
-        errorLine2="                                  ~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/example/waterreminder/ui/screens/PantallaConfig.kt"
-            line="62"
-            column="35"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        message="Call requires API level 26 (current min is 24): `actualizarIntervalo`"
-        errorLine1="            onClick = { viewModel.actualizarIntervalo(intervalo.toIntOrNull() ?: 2) },"
-        errorLine2="                                  ~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/example/waterreminder/ui/screens/PantallaConfig.kt"
-            line="78"
-            column="35"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        message="Field requires API level 26 (current min is 24): `getTemaElegido`"
-        errorLine1="                        selected = (index == viewModel.temaElegido),"
-        errorLine2="                                                       ~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/example/waterreminder/ui/screens/PantallaConfig.kt"
-            line="96"
-            column="56"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        message="Call requires API level 26 (current min is 24): `guardarTema`"
-        errorLine1="                        onClick = { viewModel.guardarTema(index) }"
-        errorLine2="                                              ~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/example/waterreminder/ui/screens/PantallaConfig.kt"
-            line="97"
-            column="47"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        message="Field requires API level 26 (current min is 24): `getTemaElegido`"
-        errorLine1="                    selected = (index == viewModel.temaElegido),"
-        errorLine2="                                                   ~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/example/waterreminder/ui/screens/PantallaConfig.kt"
-            line="103"
-            column="52"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        message="Call requires API level 26 (current min is 24): `guardarTema`"
-        errorLine1="                    onClick = { viewModel.guardarTema(index) }"
-        errorLine2="                                          ~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/example/waterreminder/ui/screens/PantallaConfig.kt"
-            line="104"
-            column="43"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        message="Field requires API level 26 (current min is 24): `getProgresoHoy`"
-        errorLine1="        targetValue = viewModel.progresoHoy,"
-        errorLine2="                                ~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/example/waterreminder/ui/screens/PantallaHoy.kt"
-            line="35"
-            column="33"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        message="Field requires API level 26 (current min is 24): `getPorcentajeHoy`"
-        errorLine1="                Text(&quot;${viewModel.porcentajeHoy}%&quot;, fontSize = 56.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)"
-        errorLine2="                                  ~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/example/waterreminder/ui/screens/PantallaHoy.kt"
-            line="54"
-            column="35"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        message="Field requires API level 26 (current min is 24): `getAguaBebidaHoy`"
-        errorLine1="                Text(&quot;${viewModel.aguaBebidaHoy} / ${viewModel.metaDiaria} ml&quot;, fontSize = 18.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)"
-        errorLine2="                                  ~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/example/waterreminder/ui/screens/PantallaHoy.kt"
-            line="55"
-            column="35"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        message="Field requires API level 26 (current min is 24): `getMetaDiaria`"
-        errorLine1="                Text(&quot;${viewModel.aguaBebidaHoy} / ${viewModel.metaDiaria} ml&quot;, fontSize = 18.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)"
-        errorLine2="                                                               ~~~~~~~~~~">
-        <location
-            file="src/main/java/com/example/waterreminder/ui/screens/PantallaHoy.kt"
-            line="55"
-            column="64"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        message="Field requires API level 26 (current min is 24): `getPorcentajeHoy`"
-        errorLine1="        if (viewModel.porcentajeHoy >= 100) {"
-        errorLine2="                      ~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/example/waterreminder/ui/screens/PantallaHoy.kt"
-            line="61"
-            column="23"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        message="Call requires API level 26 (current min is 24): `registrarAgua`"
-        errorLine1="            Button(onClick = { viewModel.registrarAgua(180) }) { Text(stringResource(R.string.boton_agregar_ml, 180)) }"
-        errorLine2="                                         ~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/example/waterreminder/ui/screens/PantallaHoy.kt"
-            line="70"
-            column="42"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        message="Call requires API level 26 (current min is 24): `registrarAgua`"
-        errorLine1="            Button(onClick = { viewModel.registrarAgua(250) }) { Text(stringResource(R.string.boton_agregar_ml, 250)) }"
-        errorLine2="                                         ~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/example/waterreminder/ui/screens/PantallaHoy.kt"
-            line="71"
-            column="42"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        message="Call requires API level 26 (current min is 24): `registrarAgua`"
-        errorLine1="            Button(onClick = { viewModel.registrarAgua(500) }) { Text(stringResource(R.string.boton_agregar_ml, 500)) }"
-        errorLine2="                                         ~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/example/waterreminder/ui/screens/PantallaHoy.kt"
-            line="72"
-            column="42"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        message="Call requires API level 26, or core library desugaring (current min is 24): `java.time.LocalDate#now`"
-        errorLine1="            val hoy = LocalDate.now().toEpochDay()"
-        errorLine2="                                ~~~">
-        <location
-            file="src/main/java/com/example/waterreminder/widget/SumarAguaAction.kt"
-            line="32"
-            column="33"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        message="Call requires API level 26, or core library desugaring (current min is 24): `java.time.LocalDate#toEpochDay`"
-        errorLine1="            val hoy = LocalDate.now().toEpochDay()"
-        errorLine2="                                      ~~~~~~~~~~">
-        <location
-            file="src/main/java/com/example/waterreminder/widget/SumarAguaAction.kt"
-            line="32"
-            column="39"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        message="Call requires API level 26, or core library desugaring (current min is 24): `java.time.LocalDate#now`"
-        errorLine1="            val hoyEpoch = LocalDate.now().toEpochDay()"
-        errorLine2="                                     ~~~">
-        <location
-            file="src/main/java/com/example/waterreminder/widget/WaterWidget.kt"
-            line="55"
-            column="38"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        message="Call requires API level 26, or core library desugaring (current min is 24): `java.time.LocalDate#toEpochDay`"
-        errorLine1="            val hoyEpoch = LocalDate.now().toEpochDay()"
-        errorLine2="                                           ~~~~~~~~~~">
-        <location
-            file="src/main/java/com/example/waterreminder/widget/WaterWidget.kt"
-            line="55"
-            column="44"/>
-    </issue>
-
-    <issue
         id="OldTargetApi"
         message="Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the `android.os.Build.VERSION_CODES` javadoc for details."
         errorLine1="        targetSdk = 36"
@@ -305,7 +85,7 @@
         errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="build.gradle.kts"
-            line="62"
+            line="63"
             column="20"/>
     </issue>
 
@@ -316,7 +96,7 @@
         errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="build.gradle.kts"
-            line="63"
+            line="64"
             column="20"/>
     </issue>
 
@@ -327,7 +107,7 @@
         errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="build.gradle.kts"
-            line="64"
+            line="65"
             column="20"/>
     </issue>
 
@@ -338,7 +118,7 @@
         errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="build.gradle.kts"
-            line="66"
+            line="67"
             column="20"/>
     </issue>
 
@@ -426,7 +206,7 @@
         errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="src/main/java/com/example/waterreminder/viewmodel/WaterViewModel.kt"
-            line="41"
+            line="38"
             column="5"/>
     </issue>
 
@@ -525,7 +305,7 @@
         errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="build.gradle.kts"
-            line="62"
+            line="63"
             column="20"/>
     </issue>
 
@@ -536,7 +316,7 @@
         errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="build.gradle.kts"
-            line="63"
+            line="64"
             column="20"/>
     </issue>
 
@@ -547,7 +327,7 @@
         errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="build.gradle.kts"
-            line="64"
+            line="65"
             column="20"/>
     </issue>
 
@@ -558,7 +338,7 @@
         errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="build.gradle.kts"
-            line="65"
+            line="66"
             column="20"/>
     </issue>
 
@@ -569,8 +349,19 @@
         errorLine2="                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="build.gradle.kts"
-            line="66"
+            line="67"
             column="20"/>
+    </issue>
+
+    <issue
+        id="UseTomlInstead"
+        message="Use version catalog instead"
+        errorLine1="    coreLibraryDesugaring(&quot;com.android.tools:desugar_jdk_libs:2.1.5&quot;)"
+        errorLine2="                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle.kts"
+            line="68"
+            column="27"/>
     </issue>
 
 </issues>
