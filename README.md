@@ -1,0 +1,98 @@
+# 💧 Water Reminder
+
+Aplicación Android para registrar el consumo de agua diario, visualizar el histórico y recibir recordatorios periódicos para mantenerte hidratado. Incluye un widget interactivo 2x2 para añadir agua sin abrir la app.
+
+[![Android CI](https://github.com/HugoBlancoo/WaterReminder/actions/workflows/android-ci.yml/badge.svg)](https://github.com/HugoBlancoo/WaterReminder/actions/workflows/android-ci.yml)
+[![Release](https://img.shields.io/github/v/tag/HugoBlancoo/WaterReminder?label=release&sort=semver)](https://github.com/HugoBlancoo/WaterReminder/tags)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.2.10-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org)
+[![Min SDK](https://img.shields.io/badge/API-24%2B-brightgreen)](https://developer.android.com/tools/releases/platforms)
+[![License: MIT](https://img.shields.io/github/license/HugoBlancoo/WaterReminder)](LICENSE)
+[![Last commit](https://img.shields.io/github/last-commit/HugoBlancoo/WaterReminder)](https://github.com/HugoBlancoo/WaterReminder/commits)
+
+## Funcionalidades
+
+- **Hoy**: progreso circular animado hacia la meta diaria, con registro rápido de 180/250/500 ml.
+- **Historial**: gráfico de barras por rango (1 semana, 2 semanas, 1 mes, 6 meses, 1 año) y estadísticas del periodo (días logrados, promedio, consumo total).
+- **Ajustes**: meta diaria configurable, frecuencia de recordatorios y selector de tema (sistema / claro / oscuro).
+- **Widget 2x2** (Jetpack Glance): progreso del día y botón de acceso rápido para sumar un vaso de agua, sincronizado en tiempo real con la app.
+- **Recordatorios en segundo plano**: notificación periódica si no se registra agua en el intervalo configurado, reprogramada automáticamente vía WorkManager.
+- **Persistencia** con DataStore Preferences y **modo claro/oscuro** dinámico según el sistema o preferencia manual.
+
+## Arquitectura
+
+Proyecto modularizado en capas siguiendo MVVM y separación de responsabilidades:
+
+```text
+com.example.waterreminder/
+├── MainActivity.kt          # Entry point: Activity + Scaffold/NavHost
+├── data/                    # DataStore, claves de preferencias, modelos y constantes
+├── viewmodel/                # WaterViewModel: estado y lógica de negocio
+├── ui/
+│   ├── screens/              # PantallaHoy, PantallaHistorial, PantallaConfig
+│   ├── components/           # Componentes reutilizables (TarjetaEstadistica...)
+│   └── theme/                 # Tema Material 3 (claro/oscuro)
+├── worker/                   # RecordatorioWorker (WorkManager)
+└── widget/                   # WaterWidget, WaterWidgetReceiver y acciones (Glance)
+```
+
+## Stack técnico
+
+| | |
+| --- | --- |
+| Lenguaje | Kotlin 2.2.10 |
+| UI | Jetpack Compose + Material 3 |
+| Widget | Jetpack Glance |
+| Persistencia | DataStore Preferences |
+| Background | WorkManager |
+| Navegación | Navigation Compose |
+| Build | AGP 9.2.1 / Gradle 9.4.1 |
+| minSdk / targetSdk | 24 / 36 |
+
+## Requisitos
+
+- Android Studio (Ladybug o superior)
+- JDK 21
+- SDK de Android con API 36 instalado
+
+## Cómo ejecutarlo
+
+```bash
+git clone git@github.com:HugoBlancoo/WaterReminder.git
+cd WaterReminder
+./gradlew assembleDebug
+```
+
+O directamente desde Android Studio: `Open` → seleccionar la carpeta del proyecto → `Run`.
+
+Para añadir el widget a la pantalla de inicio: mantener pulsado en el launcher → *Widgets* → **Water Reminder**.
+
+## Calidad y CI
+
+El workflow de [GitHub Actions](.github/workflows/android-ci.yml) corre en cada push/PR contra `main`:
+
+- `lintDebug` (con [`lint-baseline.xml`](app/lint-baseline.xml) para no bloquear por deuda técnica preexistente, solo por regresiones nuevas)
+- `testDebugUnitTest`
+- `assembleDebug`
+- En PRs, además valida que los commits sigan [Conventional Commits](https://www.conventionalcommits.org/) (`cz check`).
+
+Para ejecutarlo en local:
+
+```bash
+./gradlew lintDebug testDebugUnitTest assembleDebug
+```
+
+## Versionado y Changelog
+
+El versionado sigue [SemVer](https://semver.org/) y se automatiza con [Commitizen](https://commitizen-tools.github.io/commitizen/) a partir de los mensajes de commit ([Conventional Commits](https://www.conventionalcommits.org/)):
+
+- `fix: ...` → sube versión de **patch** (`1.1.0` → `1.1.1`)
+- `feat: ...` → sube versión de **minor** (`1.1.0` → `1.2.0`)
+- `feat!: ...` o un cuerpo con `BREAKING CHANGE:` → sube versión **major** (`1.1.0` → `2.0.0`)
+
+Cada push a `main` dispara el job `release` del workflow de CI, que analiza los commits desde el último tag, actualiza `versionName` en [`app/build.gradle.kts`](app/build.gradle.kts) y el [`CHANGELOG.md`](CHANGELOG.md), y crea el tag `vX.Y.Z` correspondiente. Si ningún commit amerita un bump, no se crea nada.
+
+Configuración en [`.cz.toml`](.cz.toml).
+
+## Licencia
+
+Distribuido bajo licencia [MIT](LICENSE).

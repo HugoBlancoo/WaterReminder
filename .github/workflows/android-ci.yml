@@ -1,0 +1,91 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ "main", "refactor/**" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Lint (debug)
+        run: ./gradlew lintDebug --console=plain
+
+      - name: Unit tests (debug)
+        run: ./gradlew testDebugUnitTest --console=plain
+
+      - name: Assemble debug APK
+        run: ./gradlew assembleDebug --console=plain
+
+      - name: Upload lint report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-report
+          path: app/build/reports/lint-results-debug.html
+          if-no-files-found: ignore
+
+  commitlint:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Commitizen
+        run: pip install commitizen
+
+      - name: Check commits follow Conventional Commits
+        run: cz check --rev-range origin/${{ github.base_ref }}..HEAD
+
+  release:
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: release
+      cancel-in-progress: false
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Analiza los commits (Conventional Commits) desde el último tag,
+      # decide el bump semver (feat -> minor, fix -> patch, BREAKING CHANGE -> major),
+      # actualiza versionName en app/build.gradle.kts, actualiza CHANGELOG.md,
+      # y crea+pushea el commit y el tag (vX.Y.Z). Si no hay nada que bumpear
+      # (exit code 21), no falla el job.
+      - name: Bump version and update changelog
+        uses: commitizen-tools/commitizen-action@0.27.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}

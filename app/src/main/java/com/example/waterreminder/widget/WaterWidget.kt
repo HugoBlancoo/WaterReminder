@@ -1,10 +1,10 @@
-package com.example.waterreminder
+package com.example.waterreminder.widget
 
 import android.content.Context
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.Preferences
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.Image
@@ -13,13 +13,10 @@ import androidx.glance.action.ActionParameters
 import androidx.glance.action.actionParametersOf
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
-import androidx.glance.appwidget.GlanceAppWidgetReceiver
 import androidx.glance.appwidget.LinearProgressIndicator
-import androidx.glance.appwidget.action.ActionCallback
 import androidx.glance.appwidget.action.actionRunCallback
 import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.provideContent
-import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.glance.background
 import androidx.glance.currentState
 import androidx.glance.layout.Alignment
@@ -37,12 +34,11 @@ import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
-import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import kotlinx.coroutines.flow.first
+import com.example.waterreminder.R
+import com.example.waterreminder.data.CLAVE_HISTORIAL
+import com.example.waterreminder.data.CLAVE_META
+import com.example.waterreminder.data.deserializarHistorial
 import java.time.LocalDate
-import java.util.concurrent.TimeUnit
 
 val cantidadKey = ActionParameters.Key<Int>("cantidad_agua")
 
@@ -50,17 +46,11 @@ class WaterWidget : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         provideContent {
             // Usamos la memoria interna del widget para que reaccione al instante
-            val prefs = currentState<androidx.datastore.preferences.core.Preferences>()
+            val prefs = currentState<Preferences>()
             val textoHistorial = prefs[CLAVE_HISTORIAL] ?: ""
             val metaDiaria = prefs[CLAVE_META] ?: 2000
 
-            val mapaHistorial = if (textoHistorial.isEmpty()) {
-                emptyMap<Long, Int>()
-            } else {
-                textoHistorial.split(",").associate {
-                    it.split(":")[0].toLong() to it.split(":")[1].toInt()
-                }
-            }
+            val mapaHistorial = deserializarHistorial(textoHistorial)
 
             val hoyEpoch = LocalDate.now().toEpochDay()
             val aguaBebidaHoy = mapaHistorial[hoyEpoch] ?: 0
@@ -78,12 +68,12 @@ class WaterWidget : GlanceAppWidget() {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
                         provider = ImageProvider(R.drawable.ic_water_drop),
-                        contentDescription = "Agua",
+                        contentDescription = context.getString(R.string.widget_content_desc_agua),
                         modifier = GlanceModifier.size(16.dp)
                     )
                     Spacer(modifier = GlanceModifier.width(6.dp))
                     Text(
-                        text = "Hidratación",
+                        text = context.getString(R.string.widget_hidratacion),
                         style = TextStyle(fontSize = 12.sp, color = ColorProvider(Color.Gray))
                     )
                 }
@@ -126,57 +116,11 @@ class WaterWidget : GlanceAppWidget() {
                 ) {
                     Image(
                         provider = ImageProvider(R.drawable.ic_vaso),
-                        contentDescription = "Añadir vaso de 250ml",
+                        contentDescription = context.getString(R.string.widget_content_desc_vaso),
                         modifier = GlanceModifier.size(36.dp)
                     )
                 }
             }
         }
-    }
-}
-
-class WaterWidgetReceiver : GlanceAppWidgetReceiver() {
-    override val glanceAppWidget = WaterWidget()
-}
-
-class SumarAguaAction : ActionCallback {
-    override suspend fun onAction(context: Context, glanceId: GlanceId, parameters: ActionParameters) {
-        val cantidad = parameters[cantidadKey] ?: 250
-
-        context.dataStore.edit { prefs ->
-            val textoHistorial = prefs[CLAVE_HISTORIAL] ?: ""
-            val mapa = if (textoHistorial.isEmpty()) {
-                mutableMapOf<Long, Int>()
-            } else {
-                textoHistorial.split(",").associate {
-                    it.split(":")[0].toLong() to it.split(":")[1].toInt()
-                }.toMutableMap()
-            }
-
-            val hoy = LocalDate.now().toEpochDay()
-            mapa[hoy] = (mapa[hoy] ?: 0) + cantidad
-            val nuevoHistorial = mapa.entries.joinToString(",") { "${it.key}:${it.value}" }
-
-            // 1. Guardamos en la app
-            prefs[CLAVE_HISTORIAL] = nuevoHistorial
-
-            // 2. Empujamos el dato al widget
-            updateAppWidgetState(context, glanceId) { currentState ->
-                currentState[CLAVE_HISTORIAL] = nuevoHistorial
-                if (!currentState.contains(CLAVE_META)) {
-                    currentState[CLAVE_META] = prefs[CLAVE_META] ?: 2000
-                }
-            }
-        }
-
-        WaterWidget().update(context, glanceId)
-
-        val prefsFinales = context.dataStore.data.first()
-        val intervaloActual = prefsFinales[CLAVE_INTERVALO] ?: 2
-
-        val peticionRecordatorio = OneTimeWorkRequestBuilder<RecordatorioWorker>()
-            .setInitialDelay(intervaloActual.toLong(), TimeUnit.HOURS)
-            .build()
-        WorkManager.getInstance(context).enqueueUniqueWork("alarma_agua", ExistingWorkPolicy.REPLACE, peticionRecordatorio)
     }
 }
