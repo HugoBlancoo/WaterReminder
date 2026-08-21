@@ -1,8 +1,6 @@
 package com.example.waterreminder.viewmodel
 
 import android.app.Application
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -36,7 +34,6 @@ import java.time.format.TextStyle
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
-@RequiresApi(Build.VERSION_CODES.O)
 class WaterViewModel(application: Application) : AndroidViewModel(application) {
     private val context = application.applicationContext
 

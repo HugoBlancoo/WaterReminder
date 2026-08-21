@@ -1,7 +1,5 @@
 package com.example.waterreminder.ui.screens
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -43,7 +41,6 @@ import com.example.waterreminder.ui.components.TarjetaEstadistica
 import com.example.waterreminder.viewmodel.WaterViewModel
 import java.util.Locale
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PantallaHistorial(viewModel: WaterViewModel) {
     val estadoDesplazamiento = rememberLazyListState()
