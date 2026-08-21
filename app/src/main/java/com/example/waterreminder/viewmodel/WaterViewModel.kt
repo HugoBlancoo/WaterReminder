@@ -159,7 +159,7 @@ class WaterViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun actualizarIntervalo(horas: Int) {
-        viewModelScope.launch { context.dataStore.edit { it[CLAVE_INTERVALO] = horas } }
+        viewModelScope.launch { context.dataStore.edit { it[CLAVE_INTERVALO] = horas.coerceAtLeast(1) } }
     }
 
     fun guardarTema(nuevoTema: Int) {
