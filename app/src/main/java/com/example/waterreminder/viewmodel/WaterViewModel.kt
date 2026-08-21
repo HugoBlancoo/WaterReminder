@@ -167,14 +167,18 @@ class WaterViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun refrescarDia() {
-        val hoy = LocalDate.now().toEpochDay()
-        if (!mapaHistorialRaw.containsKey(hoy)) {
-            viewModelScope.launch {
-                context.dataStore.edit { prefs ->
-                    val mapa = deserializarHistorial(prefs[CLAVE_HISTORIAL] ?: "").toMutableMap()
+        viewModelScope.launch {
+            val hoy = LocalDate.now().toEpochDay()
+            var diaInicializado = false
+            context.dataStore.edit { prefs ->
+                val mapa = deserializarHistorial(prefs[CLAVE_HISTORIAL] ?: "").toMutableMap()
+                if (!mapa.containsKey(hoy)) {
                     mapa[hoy] = 0
                     prefs[CLAVE_HISTORIAL] = serializarHistorial(mapa)
+                    diaInicializado = true
                 }
+            }
+            if (diaInicializado) {
                 sincronizarWidget() // Empujamos al widget
             }
         }
