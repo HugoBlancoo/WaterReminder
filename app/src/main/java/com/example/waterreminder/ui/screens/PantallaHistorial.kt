@@ -23,10 +23,17 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,6 +43,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.waterreminder.R
+import com.example.waterreminder.data.DatosDiaSemana
 import com.example.waterreminder.data.RangoTiempo
 import com.example.waterreminder.ui.components.TarjetaEstadistica
 import com.example.waterreminder.viewmodel.WaterViewModel
@@ -44,6 +52,7 @@ import java.util.Locale
 @Composable
 fun PantallaHistorial(viewModel: WaterViewModel) {
     val estadoDesplazamiento = rememberLazyListState()
+    var diaSeleccionado by remember { mutableStateOf<DatosDiaSemana?>(null) }
 
     LaunchedEffect(viewModel.historialMostrado) {
         if (viewModel.historialMostrado.isNotEmpty()) {
@@ -98,7 +107,11 @@ fun PantallaHistorial(viewModel: WaterViewModel) {
             verticalAlignment = Alignment.Bottom
         ) {
             items(viewModel.historialMostrado) { dia ->
-                Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Bottom) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Bottom,
+                    modifier = Modifier.clickable { diaSeleccionado = dia }
+                ) {
                     Box(
                         modifier = Modifier.width(28.dp).height(140.dp).background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp)),
                         contentAlignment = Alignment.BottomCenter
@@ -159,5 +172,36 @@ fun PantallaHistorial(viewModel: WaterViewModel) {
                 modifier = Modifier.weight(1f)
             )
         }
+    }
+
+    diaSeleccionado?.let { dia ->
+        AlertDialog(
+            onDismissRequest = { diaSeleccionado = null },
+            title = { Text(stringResource(R.string.editar_dia_titulo, dia.nombreDia)) },
+            text = {
+                Column {
+                    Text(stringResource(R.string.editar_dia_actual, dia.mililitros))
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        listOf(180, 250, 500).forEach { cantidad ->
+                            Button(onClick = {
+                                viewModel.registrarAguaEnFecha(dia.fecha, cantidad)
+                                diaSeleccionado = null
+                            }) {
+                                Text(stringResource(R.string.boton_agregar_ml, cantidad))
+                            }
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { diaSeleccionado = null }) {
+                    Text(stringResource(R.string.cerrar))
+                }
+            }
+        )
     }
 }
