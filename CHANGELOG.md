@@ -4,6 +4,12 @@ Todas las entradas relevantes de este proyecto se documentan en este archivo, ge
 
 El historial previo a la adopción de este flujo (incluida la modularización del proyecto) no sigue Conventional Commits y no aparece aquí; puede consultarse en el log de git.
 
+## v1.3.0 (2026-08-24)
+
+### Feat
+
+- allow logging water for past days from the history screen
+
 ## v1.2.0 (2026-08-21)
 
 ### Feat
