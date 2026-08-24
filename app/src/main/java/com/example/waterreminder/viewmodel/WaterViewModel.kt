@@ -104,7 +104,7 @@ class WaterViewModel(application: Application) : AndroidViewModel(application) {
                 fecha.format(formatoFechaCorta)
             }
 
-            lista.add(DatosDiaSemana(nombreDia = nombreEje, mililitros = ml, progreso = progresoDia))
+            lista.add(DatosDiaSemana(fecha = fecha, nombreDia = nombreEje, mililitros = ml, progreso = progresoDia))
         }
 
         historialMostrado = lista
@@ -149,6 +149,18 @@ class WaterViewModel(application: Application) : AndroidViewModel(application) {
             .setInitialDelay(intervaloNotificaciones.toLong(), TimeUnit.HOURS)
             .build()
         WorkManager.getInstance(context).enqueueUniqueWork(NOMBRE_TRABAJO_RECORDATORIO, ExistingWorkPolicy.REPLACE, peticionRecordatorio)
+    }
+
+    fun registrarAguaEnFecha(fecha: LocalDate, cantidad: Int) {
+        viewModelScope.launch {
+            context.dataStore.edit { prefs ->
+                val mapa = deserializarHistorial(prefs[CLAVE_HISTORIAL] ?: "").toMutableMap()
+                val dia = fecha.toEpochDay()
+                mapa[dia] = (mapa[dia] ?: 0) + cantidad
+                prefs[CLAVE_HISTORIAL] = serializarHistorial(mapa)
+            }
+            sincronizarWidget() // Empujamos al widget
+        }
     }
 
     fun actualizarMeta(nueva: Int) {

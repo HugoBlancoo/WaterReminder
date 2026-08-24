@@ -20,6 +20,9 @@
     <string name="objetivo">Objetivo</string>
     <string name="formato_litros">%s L</string>
     <string name="formato_ml">%d ml</string>
+    <string name="editar_dia_titulo">Añadir agua · %s</string>
+    <string name="editar_dia_actual">Registrado: %d ml</string>
+    <string name="cerrar">Cerrar</string>
 
     <!-- Pantalla Ajustes -->
     <string name="ajustes_titulo">Ajustes</string>
